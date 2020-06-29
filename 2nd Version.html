@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+        <button type="button" id="Rock">Rock</button>
+        <button type="button" id="Paper">Paper</button>
+        <button type="button" id="Scissors">Scissors</button>
+
+        <div id="scores">
+
+        </div>
+
+        <div id="container" >
+
+        </div>
+
+
+    </body>
+
+
+    <script>
+        
+        // Selectors
+        const rockButton = document.querySelector('#Rock')
+        const paperButton = document.querySelector('#Paper')
+        const scissorsButton = document.querySelector('#Scissors')
+        const scores = document.querySelector('#scores')
+        const div = document.querySelector('#container')
+
+        // Dynamic scores
+        let computerScore = 0
+        let playerScore = 0
+        let roundNumber = 1
+
+
+        // Player Score
+        const playerScoreDOM = document.createElement('p')
+        playerScoreDOM.textContent = `Player Score: ${playerScore}`
+        scores.appendChild(playerScoreDOM)
+
+        // Computer score
+        const computerScoreDOM = document.createElement('p')
+        computerScoreDOM.textContent = `Computer Score: ${computerScore}`
+        scores.appendChild(computerScoreDOM)
+
+        // Round number
+        const roundNumberDOM = document.createElement('p')
+        roundNumberDOM.textContent = `Round: ${roundNumber}`
+        scores.appendChild(roundNumberDOM)
+
+        // Computer Selection
+        const computerPlay = () => {
+            const selectionNumber = Math.floor(Math.random() * 3) 
+
+            if (selectionNumber === 1) {
+                return "rock"
+            } else if (selectionNumber === 2) {
+                return "paper"
+            } else {
+                return "scissors"
+            }
+        }
+
+
+        let playerChoice
+
+        // Function to dynamically add text
+        const addText = (result) => {
+            const winner = document.createElement('p')
+            winner.textContent = result
+            div.appendChild(winner)
+        }
+
+        const disableButtons = () => {
+            rockButton.disabled = true
+            paperButton.disabled = true
+            scissorsButton.disabled = true
+        }
+
+        // Dynamically update scores
+        const updateScores = (winner) => {
+            roundNumber++
+            roundNumberDOM.textContent = `Round: ${roundNumber}`
+            if (winner) {
+                playerScore++
+                playerScoreDOM.textContent = `Player Score: ${playerScore}`
+            } else {
+                computerScore++
+                computerScoreDOM.textContent = `Computer Score: ${computerScore}`
+            }
+            if (playerScore === 5) {
+                addText("Player wins the game!")
+                disableButtons()
+            } else if (computerScore === 5) {
+                addText("Computer wins the game!")
+                disableButtons()
+        }
+        }
+        
+        // Rock Button
+        rockButton.addEventListener ('click', (e) => {
+            const {result, winner} = playRound("rock", computerPlay())
+            addText(result)
+            updateScores(winner)
+        })
+
+        // Paper Button
+        paperButton.addEventListener ('click', (e) => {
+            const {result} = playRound("paper", computerPlay())
+            addText(result)
+            updateScores(winner)
+        })
+
+        // Scissor Button
+        scissorsButton.addEventListener ('click', (e) => {
+            const {result} = playRound("scissors", computerPlay())
+            addText(result)
+            updateScores(winner)
+        })
+
+        // Returns winner and result
+        const playRound = (playerSelection, computerSelection) => {
+
+            let result
+            let winner = null
+
+            switch(true) {
+                case (playerSelection === "rock" && computerSelection === "scissors"):
+                    result = "You win! Rock beats scissors"
+                    winner = true
+                    break;
+                case (playerSelection === "rock" && computerSelection === "rock"):
+                    result = "Draw! Both have Rock"
+                    break;
+                case (playerSelection === "rock" && computerSelection === "paper"):
+                    result = "You lose! Paper beats Rock"
+                    winner = false
+                    break;
+                case (playerSelection === "paper" && computerSelection === "scissors"):
+                    result = "You lose! Scissors beats Paper"
+                    winner = false
+                    break;
+                case (playerSelection === "paper" && computerSelection === "paper"):
+                    result = "Draw! Both have paper"
+                    break;
+                case (playerSelection === "paper" && computerSelection === "rock"):
+                    result = "You win! Paper beats rock"
+                    winner = true
+                    break;
+                case (playerSelection === "scissors" && computerSelection === "scissors"):
+                    result = "Draw! Both have scissors"
+                    break;
+                case (playerSelection === "scissors" && computerSelection === "paper"):
+                    result = "You win! Scissors beat paper"
+                    winner = true
+                    break;
+                case (playerSelection === "scissors" && computerSelection === "rock"):
+                    result = "You lose! Rock beats scissors"
+                    winner = false
+                    break;
+            }
+
+            return {winner, result }
+        }  
+
+        alert("Welcome to the game of rock, paper and scissors!")
+
+
+
+
+
+
+
+
+
+
+
+
+        // const game = () => {
+
+        //     let computerScore = 0
+        //     let playerScore = 0
+
+        //     let winner
+
+        //     // Updating scores
+        //     const scores = () => {
+        //         if (winner === "player") {
+        //             playerScore ++
+        //             alert(`Player wins round ${numberRounds}`)
+        //         } else if (winner === "computer") {
+        //             computerScore ++
+        //             alert(`Computer wins round ${numberRounds}`)
+        //         } else {
+        //             alert(`Round ${numberRounds} is a draw`)
+        //         }
+        //         numberRounds++
+        //     }
+
+        //     let playerChoice
+
+        //     // Looping rounds
+        //     for (i=0; i < rounds; i++) {
+        //         playerChoice = window.prompt("Rock, paper or scissors?")
+        //         playerChoice = window.prompt("Rock, paper or scissors?")
+
+        //         winner = playRound(playerChoice, computerPlay())
+        //         scores()
+        //     }
+
+        //     //Declaring winner
+        //     if ( computerScore > playerScore) {
+        //         alert("Game has finished! Computer wins the game!")
+        //     } else if (playerScore > computerScore) {
+        //         alert("Game has finished! Player wins the game!")
+        //     } else {
+        //         alert("Game has finished! It's a draw")
+        //     }
+
+        //     return {computerScore, playerScore}
+        // }
+    
+        // game()
+        
+
+    </script>
+
+</html>
